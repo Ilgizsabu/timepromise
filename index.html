@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Промистаймертет</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .table-result {
+            width: 50%;
+            margin: 0;
+            text-align: left;
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Промистаймертет</h1>
+    <div>
+        <input class="input-user input-user_value" type="text" placeholder="Введите число"><button class="input-user input-user_button">Старт</button>
+    </div>
+    <h2>Результат расчетов</h2>
+    <table class="table-result table-result_value">
+        <tbody>
+            <tr>
+                <th>Минимальное значение</th>
+                <td class="table-result table-result_value_min"></td>
+            </tr>
+            <tr>
+                <th>Максимальное значение</th>
+                <td class="table-result table-result_value_max"></td>
+            </tr>
+            <tr>
+                <th>Среднее значение</th>
+                <td class="table-result table-result_value_average"></td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        const inputUserValue = document.querySelector('.input-user_value');
+        const inputUserButton = document.querySelector('.input-user_button');
+        debugger
+
+        inputUserButton.addEventListener('click', () => {
+            inputUserButton.disabled = true;
+            const dataUser = parseInt(inputUserValue.value);
+            const checkDataUser = !isNaN(dataUser);
+
+            if(checkDataUser && dataUser > 0) {
+                const promises = [];
+                for(let i = 0; i < dataUser; i += 1) {
+                    const promiseCreate = new Promise(function(resolve, reject) {
+                        setTimeout(() => {
+                            const number = Math.floor(Math.random() * 10);
+                            resolve(number);
+                        }, 1000);
+                    });
+                    promises.push(promiseCreate);
+                };
+
+                Promise.all(promises)
+                    .then((results) => {
+                        const minNumber = Math.min(...results);
+                        const maxNumber = Math.max(...results);
+                        const sum = results.reduce((acc, value) => acc + value, 0);
+                        const average = sum / results.length;
+
+                        document.querySelector('.table-result_value_min').textContent = minNumber;
+                        document.querySelector('.table-result_value_max').textContent = maxNumber;
+                        document.querySelector('.table-result_value_average').textContent = average.toFixed(2);
+                    })
+                    .finally(() => {
+                        inputUserButton.disabled = false;
+                        inputUserValue.value = '';
+                    }); 
+            } else {
+                inputUserButton.disabled = false;
+                alert('Введите коректное число!');
+            };
+        });
+    </script>
+</body>
+</html> 
