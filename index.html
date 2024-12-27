@@ -43,42 +43,42 @@
         const inputUserButton = document.querySelector('.input-user_button');
 
         inputUserButton.addEventListener('click', () => {
-					inputUserButton.disabled = true;
-					const dataUser = parseInt(inputUserValue.value);
-					const checkDataUser = !isNaN(dataUser);
+          inputUserButton.disabled = true;
+          const dataUser = parseInt(inputUserValue.value);
+          const checkDataUser = !isNaN(dataUser);
 
-					if(checkDataUser && dataUser > 0) {
-						const promises = [];
-						for(let i = 0; i < dataUser; i += 1) {
-								const promiseCreate = new Promise(function(resolve, reject) {
-										setTimeout(() => {
-												const number = Math.floor(Math.random() * 10);
-												resolve(number);
-										}, 1000);
-								});
-								promises.push(promiseCreate);
-						};
+          if(checkDataUser && dataUser > 0) {
+            const promises = [];
+            for(let i = 0; i < dataUser; i += 1) {
+              const promiseCreate = new Promise(function(resolve, reject) {
+                setTimeout(() => {
+                  const number = Math.floor(Math.random() * 10);
+                  resolve(number);
+                }, 1000);
+              });
+              promises.push(promiseCreate);
+            };
 
-						Promise.all(promises)
-							.then((results) => {
-								const minNumber = Math.min(...results);
-								const maxNumber = Math.max(...results);
-								const sum = results.reduce((acc, value) => acc + value, 0);
-								const average = sum / results.length;
+            Promise.all(promises)
+              .then((results) => {
+                const minNumber = Math.min(...results);
+                const maxNumber = Math.max(...results);
+                const sum = results.reduce((acc, value) => acc + value, 0);
+                const average = sum / results.length;
 
-								document.querySelector('.table-result_value_min').textContent = minNumber;
-								document.querySelector('.table-result_value_max').textContent = maxNumber;
-								document.querySelector('.table-result_value_average').textContent = average.toFixed(2);
-							})
-							.finally(() => {
-								inputUserButton.disabled = false;
-								inputUserValue.value = '';
-							}); 
-					} else {
-							inputUserButton.disabled = false;
-							alert('Введите целое число!');
-					};
+                document.querySelector('.table-result_value_min').textContent = minNumber;
+                document.querySelector('.table-result_value_max').textContent = maxNumber;
+                document.querySelector('.table-result_value_average').textContent = average.toFixed(2);
+              })
+              .finally(() => {
+                inputUserButton.disabled = false;
+                inputUserValue.value = '';
+              }); 
+          } else {
+            inputUserButton.disabled = false;
+            alert('Введите целое число!');
+          };
         });
     </script>
 </body>
-</html> 
+</html>
